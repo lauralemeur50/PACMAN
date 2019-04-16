@@ -52,8 +52,6 @@ class Niveau:
 					fenetre.blit(mur, (x,y))
 				elif sprite == 'd':		   #d = Départ
 					fenetre.blit(depart, (x,y))
-				elif sprite == 'a':		   #a = Arrivée
-					fenetre.blit(arrivee, (x,y))
 				num_case += 1
 			num_ligne += 1
 			
@@ -70,10 +68,10 @@ class Perso:
 		self.bas = pygame.image.load(bas).convert_alpha()
 		self.rond= pygame.image.load(rond).convert_alpha()
 		#Position du personnage en cases et en pixels
-		self.case_x = 9
-		self.case_y = 15
-		self.x = 9*taille_sprite
-		self.y = 15*taille_sprite
+		self.case_x = 8
+		self.case_y = 14
+		self.x = 8*taille_sprite*10
+		self.y = 14*taille_sprite*10
 		#Direction par défaut
 		self.direction = self.rond
 		#Niveau dans lequel le personnage se trouve 
@@ -92,7 +90,7 @@ class Perso:
 					#Déplacement d'une case
 					self.case_x += 1
 					#Calcul de la position "réelle" en pixel
-					self.x = self.case_x * taille_sprite
+					self.x = self.case_x * taille_sprite *10
 					#Affichages aux nouvelles positions
 					fenetre.blit(fond, (0,0))
 					niveau.afficher(fenetre)
@@ -106,7 +104,7 @@ class Perso:
 			self.direction = self.gauche
 			if self.case_x > 0 and  self.niveau.structure[self.case_y][self.case_x-1] != 'm':
 					self.case_x -= 1
-					self.x = self.case_x * taille_sprite
+					self.x = self.case_x * taille_sprite *10
 					#Affichages aux nouvelles positions
 					fenetre.blit(fond, (0,0))
 					niveau.afficher(fenetre)
@@ -119,7 +117,7 @@ class Perso:
 			self.direction = self.haut
 			if self.case_y > 0 and self.niveau.structure[self.case_y-1][self.case_x] != 'm':
 					self.case_y -= 1
-					self.y = self.case_y * taille_sprite
+					self.y = self.case_y * taille_sprite *10
 					#Affichages aux nouvelles positions
 					fenetre.blit(fond, (0,0))
 					niveau.afficher(fenetre)
@@ -132,7 +130,7 @@ class Perso:
 			self.direction = self.bas
 			if self.case_y < (nombre_sprite_cote - 1) and self.niveau.structure[self.case_y+1][self.case_x] != 'm':
 					self.case_y += 1
-					self.y = self.case_y * taille_sprite
+					self.y = self.case_y * taille_sprite *10
 					#Affichages aux nouvelles positions
 					fenetre.blit(fond, (0,0))
 					niveau.afficher(fenetre)
@@ -144,16 +142,16 @@ class Perso:
 		if direction== 'standard':
 			if self.direction== self.bas and self.case_y < (nombre_sprite_cote - 1) and self.niveau.structure[self.case_y+1][self.case_x] != 'm':
 				self.case_y += 1
-				self.y = self.case_y * taille_sprite
+				self.y = self.case_y * taille_sprite *10
 			elif self.direction==self.haut and self.case_y > 0 and self.niveau.structure[self.case_y-1][self.case_x] != 'm':
 				self.case_y -= 1
-				self.y = self.case_y * taille_sprite
+				self.y = self.case_y * taille_sprite *10
 			elif self.direction== self.gauche and self.case_x > 0 and  self.niveau.structure[self.case_y][self.case_x-1] != 'm':
 				self.case_x -= 1
-				self.x = self.case_x * taille_sprite
+				self.x = self.case_x * taille_sprite *10
 			elif self.direction==self.droite and self.case_x < (nombre_sprite_cote - 1)  and self.niveau.structure[self.case_y][self.case_x+1] != 'm':
 				self.case_x += 1
-				self.x = self.case_x * taille_sprite
+				self.x = self.case_x * taille_sprite *10
 
 
 
