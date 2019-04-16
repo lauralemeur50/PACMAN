@@ -93,6 +93,12 @@ class Perso:
 					self.case_x += 1
 					#Calcul de la position "réelle" en pixel
 					self.x = self.case_x * taille_sprite
+					#Affichages aux nouvelles positions
+					fenetre.blit(fond, (0,0))
+					niveau.afficher(fenetre)
+					fenetre.blit(pacman.direction, (pacman.x, pacman.y)) #pacman.direction = l'image dans la bonne direction
+					pygame.display.flip()
+					
 
 		
 		#Déplacement vers la gauche
@@ -101,6 +107,11 @@ class Perso:
 			while self.case_x > 0 and  self.niveau.structure[self.case_y][self.case_x-1] != 'm':
 					self.case_x -= 1
 					self.x = self.case_x * taille_sprite
+					#Affichages aux nouvelles positions
+					fenetre.blit(fond, (0,0))
+					niveau.afficher(fenetre)
+					fenetre.blit(pacman.direction, (pacman.x, pacman.y)) #pacman.direction = l'image dans la bonne direction
+					pygame.display.flip()
 
 		
 		#Déplacement vers le haut
@@ -109,6 +120,11 @@ class Perso:
 			while self.case_y > 0 and self.niveau.structure[self.case_y-1][self.case_x] != 'm':
 					self.case_y -= 1
 					self.y = self.case_y * taille_sprite
+					#Affichages aux nouvelles positions
+					fenetre.blit(fond, (0,0))
+					niveau.afficher(fenetre)
+					fenetre.blit(pacman.direction, (pacman.x, pacman.y)) #pacman.direction = l'image dans la bonne direction
+					pygame.display.flip()
 
 		
 		#Déplacement vers le bas
@@ -117,4 +133,9 @@ class Perso:
 			while self.case_y < (nombre_sprite_cote - 1) and self.niveau.structure[self.case_y+1][self.case_x] != 'm':
 					self.case_y += 1
 					self.y = self.case_y * taille_sprite
+					#Affichages aux nouvelles positions
+					fenetre.blit(fond, (0,0))
+					niveau.afficher(fenetre)
+					fenetre.blit(pacman.direction, (pacman.x, pacman.y)) #pacman.direction = l'image dans la bonne direction
+					pygame.display.flip()
 
