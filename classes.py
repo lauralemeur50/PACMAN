@@ -88,7 +88,7 @@ class Perso:
 			#Image dans la bonne direction
 			self.direction = self.droite
 			#Pour ne pas dépasser l'écran
-			while  self.case_x < (nombre_sprite_cote - 1)  and self.niveau.structure[self.case_y][self.case_x+1] != 'm':
+			if  self.case_x < (nombre_sprite_cote - 1)  and self.niveau.structure[self.case_y][self.case_x+1] != 'm':
 					#Déplacement d'une case
 					self.case_x += 1
 					#Calcul de la position "réelle" en pixel
@@ -104,7 +104,7 @@ class Perso:
 		#Déplacement vers la gauche
 		if direction == 'gauche':
 			self.direction = self.gauche
-			while self.case_x > 0 and  self.niveau.structure[self.case_y][self.case_x-1] != 'm':
+			if self.case_x > 0 and  self.niveau.structure[self.case_y][self.case_x-1] != 'm':
 					self.case_x -= 1
 					self.x = self.case_x * taille_sprite
 					#Affichages aux nouvelles positions
@@ -117,7 +117,7 @@ class Perso:
 		#Déplacement vers le haut
 		if direction == 'haut':
 			self.direction = self.haut
-			while self.case_y > 0 and self.niveau.structure[self.case_y-1][self.case_x] != 'm':
+			if self.case_y > 0 and self.niveau.structure[self.case_y-1][self.case_x] != 'm':
 					self.case_y -= 1
 					self.y = self.case_y * taille_sprite
 					#Affichages aux nouvelles positions
@@ -130,7 +130,7 @@ class Perso:
 		#Déplacement vers le bas
 		if direction == 'bas':
 			self.direction = self.bas
-			while self.case_y < (nombre_sprite_cote - 1) and self.niveau.structure[self.case_y+1][self.case_x] != 'm':
+			if self.case_y < (nombre_sprite_cote - 1) and self.niveau.structure[self.case_y+1][self.case_x] != 'm':
 					self.case_y += 1
 					self.y = self.case_y * taille_sprite
 					#Affichages aux nouvelles positions
@@ -138,4 +138,24 @@ class Perso:
 					niveau.afficher(fenetre)
 					fenetre.blit(pacman.direction, (pacman.x, pacman.y)) #pacman.direction = l'image dans la bonne direction
 					pygame.display.flip()
+					
+					
+		#déplacement standard
+		if direction== 'standard':
+			if self.direction== self.bas and self.case_y < (nombre_sprite_cote - 1) and self.niveau.structure[self.case_y+1][self.case_x] != 'm':
+				self.case_y += 1
+				self.y = self.case_y * taille_sprite
+			elif self.direction==self.haut and self.case_y > 0 and self.niveau.structure[self.case_y-1][self.case_x] != 'm':
+				self.case_y -= 1
+				self.y = self.case_y * taille_sprite
+			elif self.direction== self.gauche and self.case_x > 0 and  self.niveau.structure[self.case_y][self.case_x-1] != 'm':
+				self.case_x -= 1
+				self.x = self.case_x * taille_sprite
+			elif self.direction==self.droite and self.case_x < (nombre_sprite_cote - 1)  and self.niveau.structure[self.case_y][self.case_x+1] != 'm':
+				self.case_x += 1
+				self.x = self.case_x * taille_sprite
+
+
+
+
 
