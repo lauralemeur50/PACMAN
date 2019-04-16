@@ -1,8 +1,8 @@
 """Constantes du jeu pacman"""
 
 #Paramètres de la fenêtre
-nombre_sprite_cote = 17
-taille_sprite = 30
+nombre_sprite_cote = 170
+taille_sprite = 3
 cote_fenetre = nombre_sprite_cote * taille_sprite
 
 #Personnalisation de la fenêtre
