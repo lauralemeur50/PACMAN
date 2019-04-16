@@ -104,7 +104,10 @@ while continuer:
 				elif event.key == K_UP:
 					pacman.deplacer('haut')
 				elif event.key == K_DOWN:
-					pacman.deplacer('bas')			
+					pacman.deplacer('bas')	
+					
+		#Si on a appuyé sur rien, pacman continue son chemin
+		pacman.deplacer('standard')
 			
 		#Affichages aux nouvelles positions
 		fenetre.blit(fond, (0,0))
