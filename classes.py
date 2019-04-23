@@ -4,6 +4,7 @@ import pygame
 from pygame.locals import * 
 from constantes import *
 
+
 class Niveau:
 	"""Classe permettant de créer un niveau"""
 	def __init__(self, fichier):
@@ -77,12 +78,18 @@ class Niveau:
 			num_ligne += 1
 
 			
+
+class fruit:
+	def __init__(self,score,case_x,case_y):
+		self.score=score
+		self.case_x=case_x
+		self.case_y=case_y			
 			
 			
-			
-class Perso:
+class PACMAN:
 	"""Classe permettant de créer un personnage"""
 	def __init__(self, droite, gauche, haut, bas, niveau,score):
+
 		#Sprites du personnage
 		self.droite = pygame.image.load(droite).convert_alpha()
 		self.gauche = pygame.image.load(gauche).convert_alpha()
@@ -156,61 +163,64 @@ class Perso:
 				self.case_x += 1
 				self.x = self.case_x * taille_sprite 
 
-def eatFruit(self,fruit):
-		self.score=self.score+fruit.score
+	def eatFruit(self, fruit):
+		self.score=self.score+ fruit.score
 
 	def eatGum(self,gum):
-		#depend de la gomme
+		if gum=='petite':
+			self.score += 1
+		elif gum=='grosse':
+			self.gum+=5
 
 
 
-class ghost:
-	def __init__(self,name,state,score):
-		self.name= pygame.image.load(name_gost).convert_alpha()
-		#self.state=state
+class ghost :
+	def __init__(self,name,state, image, imagebleue, perso):
+		self.name= name
+		self.state=state
 		#Position du personnage en cases et en pixels
-		self.case_x = 12
-		self.case_y = 10
-		self.x = 12*taille_sprite
-		self.y = 10*taille_sprite
-		#Niveau dans lequel le personnage se trouve 
-		self.niveau = niveau
-		#points du fantome lorsqu il est bleu
-		self.score=score
+		self.case_x = 14
+		self.case_y = 15
+		self.x = 14*taille_sprite
+		self.y = 15*taille_sprite
+		#visuel du fantôme
+		self.image= pygame.image.load(image).convert_alpha()
+		self.bleu=imagebleue
+		self.perso=perso
 
-	def endGame(self):
+	#def endGame(self):
 		#mettre dans la boucle principale si il y a rencontre avec pacman
-		pygame.display.set_caption("Game Over")
-		continuer_jeu = 0
-		continuer = 0
+		#pygame.display.set_caption("Game Over")
+		#continuer_jeu = 0
+		#continuer = 0
 
 	
 	#def Blue(self):
-		#None
+		#pygame.image.load(self.bleu).convert_alpha
 
 	def Chasing(self):#converge vers pacman dans un premier temps
 		#calcule difference en abscisse et ordonnee et parcourt le chemin le plus long des differences en 1er
-		dif_x= pacman.case_x-ghost.case_x
-		dif_y= pacman.case_y-ghost.case_y
-		if dif_x=dif_y=0:#MANGE PACMAN
-			gost.endGame()
+		dif_x= self.perso.case_x-self.case_x
+		dif_y= self.perso.case_y-self.case_y
+		if dif_x==0 and dif_y==0: #MANGE PACMAN
+			self.endGame()
 		elif abs(dif_x)>abs(dif_y):
 			if dif_x<0:
-				while self.case_x > 0 and  self.niveau.structure[self.case_y][self.case_x-1] != 'm':
+				while self.case_x > 0 and  self.perso.niveau.structure[self.case_y][self.case_x-1] != 'C' and  self.perso.niveau.structure[self.case_y][self.case_x-1] != '1' and  self.perso.niveau.structure[self.case_y][self.case_x-1] != '2':
 					self.case_x -= 1
 					self.x = self.case_x * taille_sprite
 			else:
-				while  self.case_x < (nombre_sprite_cote - 1)  and self.niveau.structure[self.case_y][self.case_x+1] != 'm':
+				while  self.case_x < (nombre_sprite_largeur - 1)  and self.perso.niveau.structure[self.case_y][self.case_x+1] != 'C' and self.perso.niveau.structure[self.case_y][self.case_x+1] != '3' and self.perso.niveau.structure[self.case_y][self.case_x+1] != '4':
 					self.case_x += 1
 					self.x = self.case_x * taille_sprite
 		else:
 			if dif_y<0:
-				while self.case_y > 0 and self.niveau.structure[self.case_y-1][self.case_x] != 'm':
+				while self.case_y > 0 and self.perso.niveau.structure[self.case_y-1][self.case_x] != 'L' and self.perso.niveau.structure[self.case_y-1][self.case_x] != '2' and self.perso.niveau.structure[self.case_y-1][self.case_x] != '3':
 					self.case_y -= 1
 					self.y = self.case_y * taille_sprite
 				
 			else:
-				while self.case_y < (nombre_sprite_cote - 1) and self.niveau.structure[self.case_y+1][self.case_x] != 'm':
+				while self.case_y < (nombre_sprite_longueur - 1) and self.perso.niveau.structure[self.case_y+1][self.case_x] != 'L' and self.perso.niveau.structure[self.case_y+1][self.case_x] != '1' and self.perso.niveau.structure[self.case_y+1][self.case_x] != '4':
 					self.case_y += 1
 					self.y = self.case_y * taille_sprite
 
@@ -220,44 +230,28 @@ class ghost:
 
 	def Flee(self):
 		#calcule difference en abscisse et ordonnee et s'éloigne dans la direction où l'ecart est le plus faible
-		dif_x= pacman.case_x-ghost.case_x
-		dif_y= pacman.case_y-ghost.case_y
-		if dif_x=dif_y=0:# est mangé par pacman
-			pacman.score+= ghost.score
+		dif_x= self.perso.case_x-ghost.case_x
+		dif_y= self.perso.case_y-ghost.case_y
+		#if dif_x==0 and dif_y==0:# est mangé par pacman
+		#	PACMAN.score+= ghost.score
 			#faire disparaitre ghost (programme principal ?)
-		elif abs(dif_x)>abs(dif_y):
-			if dif_y<0:
-				while self.case_y > 0 and self.niveau.structure[self.case_y+1][self.case_x] != 'm':
-					self.case_y += 1
-					self.y = self.case_y * taille_sprite
+		#elif abs(dif_x)>abs(dif_y):
+			#if dif_y<0:
+				#while self.case_y > 0 and self.niveau.structure[self.case_y+1][self.case_x] != 'm':
+					#self.case_y += 1
+					#self.y = self.case_y * taille_sprite
 				
-			else:
-				while self.case_y < (nombre_sprite_cote - 1) and self.niveau.structure[self.case_y-1][self.case_x] != 'm':
-					self.case_y -= 1
-					self.y = self.case_y * taille_sprite
-		else:
-			if dif_x<0:
-				while self.case_x > 0 and  self.niveau.structure[self.case_y][self.case_x+1] != 'm':
-					self.case_x += 1
-					self.x = self.case_x * taille_sprite
-			else:
-				while  self.case_x < (nombre_sprite_cote - 1)  and self.niveau.structure[self.case_y][self.case_x-1] != 'm':
-					self.case_x -= 1
-					self.x = self.case_x * taille_sprite
+			#else:
+				#while self.case_y < (nombre_sprite_cote - 1) and self.niveau.structure[self.case_y-1][self.case_x] != 'm':
+				#	self.case_y -= 1
+				#	self.y = self.case_y * taille_sprite
+		#else:
+			#if dif_x<0:
+				#while self.case_x > 0 and  self.niveau.structure[self.case_y][self.case_x+1] != 'm':
+				#	self.case_x += 1
+				#	self.x = self.case_x * taille_sprite
+			#else:
+			#	while  self.case_x < (nombre_sprite_cote - 1)  and self.niveau.structure[self.case_y][self.case_x-1] != 'm':
+			#		self.case_x -= 1
+				#	self.x = self.case_x * taille_sprite
 		
-			
-
-
-
-class fruit:
-	def __init__(self,score,case_x,case_y)
-		self.score=score
-		self.case_x=case_x
-		self.case_y=case_y
-
-#class gum:
-	#def__init__(self,size):
-		#self.size=size
-	
-#mettre les gommes dans le labyrinthe, à gerer comme les murs
-
