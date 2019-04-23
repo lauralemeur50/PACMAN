@@ -52,10 +52,15 @@ while continuer:
 				#Variable de choix du niveau
 				choix = 0
 				
-			else:			
+			elif event.type == KEYDOWN and event. key == K_KP1:			
 				#Lancement du niveau 1
 				continuer_accueil = 0	#On quitte l'accueil
 				choix = 'labyrinthe'		#On définit le niveau à charger
+			
+			elif event.type == KEYDOWN and event.key == K_KP2:
+				#Lancement du niveau 2
+				continuer_accueil=0	
+				#mettre le deuxième labyrinthe quand on l'aura
 				
 			
 		
