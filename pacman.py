@@ -52,14 +52,14 @@ while continuer:
 				#Variable de choix du niveau
 				choix = 0
 				
-			elif event.type == KEYDOWN and event. key == K_KP1:			
+			#elif event.type == KEYDOWN and event. key == K_KP1:			
 				#Lancement du niveau 1
-				continuer_accueil = 0	#On quitte l'accueil
-				choix = 'labyrinthe'		#On définit le niveau à charger
+			continuer_accueil = 0	#On quitte l'accueil
+			choix = 'labyrinthe'		#On définit le niveau à charger
 			
-			elif event.type == KEYDOWN and event.key == K_KP2:
+			#elif event.type == KEYDOWN and event.key == K_KP2:
 				#Lancement du niveau 2
-				continuer_accueil=0	
+				#continuer_accueil=0	
 				#mettre le deuxième labyrinthe quand on l'aura
 				
 			
@@ -81,13 +81,15 @@ while continuer:
 		niveau.afficher(fenetre)
 		
 		
-
 		#Création de pacman
-		pacman = Perso("pacman_d.png", "pacman_g.png", 
+		pacman = PACMAN("pacman_d.png", "pacman_g.png", 
 		"pacman_h.png", "pacman_b.png", niveau, score)
 		
+		#Création du fantôme
+		fantome= ghost("blinky", "normal", "blinky.png", "fantome_bleu.png", pacman)
+
 		#affichage du score
-		pygame.display.set_caption(pacman.score)
+		pygame.display.set_caption(str(pacman.score))
 		
 
 				
@@ -97,9 +99,9 @@ while continuer:
 		#Limitation de vitesse de la boucle
 		pygame.time.Clock().tick(8)
 
-
 	
 		for event in pygame.event.get():
+
 		
 			#Si l'utilisateur quitte, on met la variable qui continue le jeu
 			#ET la variable générale à 0 pour fermer la fenêtre
@@ -115,37 +117,60 @@ while continuer:
 				#Touches de déplacement de pacman
 				elif event.key == K_RIGHT:
 					pacman.deplacer('droite')
+					if niveau.structure[pacman.case_y][pacman.case_x]=='p':
+						pacman.eatGum('petite')
 					#on affiche du vide à la place de la gomme que pacman a mangé
 					niveau.structure[pacman.case_y][pacman.case_x]='v'
+
 				elif event.key == K_LEFT:
 					pacman.deplacer('gauche')
+					if niveau.structure[pacman.case_y][pacman.case_x]=='p':
+						pacman.eatGum('petite')
 					#on affiche du vide à la place de la gomme que pacman a mangé
 					niveau.structure[pacman.case_y][pacman.case_x]='v'
+
 				elif event.key == K_UP:
 					pacman.deplacer('haut')
+					if niveau.structure[pacman.case_y][pacman.case_x]=='p':
+						pacman.eatGum('petite')
 					#on affiche du vide à la place de la gomme que pacman a mangé
 					niveau.structure[pacman.case_y][pacman.case_x]='v'
+
 				elif event.key == K_DOWN:
 					pacman.deplacer('bas')	
+					if niveau.structure[pacman.case_y][pacman.case_x]=='p':
+						pacman.eatGum('petite')
 					#on affiche du vide à la place de la gomme que pacman a mangé
 					niveau.structure[pacman.case_y][pacman.case_x]='v'
 					
 		#Si on a appuyé sur rien, pacman continue son chemin
 		pacman.deplacer('standard')
 
+
+		#le fantôme se déplace
+		fantome.Chasing()
+
+
+		#augmentation du score si pacman a mangé une gomme
+		if niveau.structure[pacman.case_y][pacman.case_x]=='p':
+			pacman.eatGum('petite')
+
 		#on affiche du vide à la place de la gomme que pacman a mangé
 		niveau.structure[pacman.case_y][pacman.case_x]='v'
-			
+
+		#affichage du nouveau score
+		pygame.display.set_caption(str(pacman.score))
 		#Affichages aux nouvelles positions
 		fenetre.blit(fond, (0,0))
 		niveau.afficher(fenetre)
 		fenetre.blit(pacman.direction, (pacman.x, pacman.y)) #pacman.direction = l'image dans la bonne direction
+		fenetre.blit(fantome.image, (fantome.x, fantome.y))
 		pygame.display.flip()
 
 
 
 
 		#Victoire -> Retour à l'accueil
-		if niveau.structure[pacman.case_y][pacman.case_x] == 'a':
+		if choix=='labyrinthe' and pacman.score== 260:
 			continuer_jeu = 0
-
+			continuer_accueil=1
