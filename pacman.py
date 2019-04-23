@@ -68,6 +68,10 @@ while continuer:
 	#on vérifie que le joueur a bien fait un choix de niveau
 	#pour ne pas charger s'il quitte
 	if choix != 0:
+		
+		#défintion du score
+		score =0
+		
 		#Chargement du fond
 		fond = pygame.image.load(image_fond).convert()
 
@@ -75,10 +79,16 @@ while continuer:
 		niveau = Niveau(choix)
 		niveau.generer()
 		niveau.afficher(fenetre)
+		
+		
 
 		#Création de pacman
 		pacman = Perso("pacman_d.png", "pacman_g.png", 
-		"pacman_h.png", "pacman_b.png", niveau)
+		"pacman_h.png", "pacman_b.png", niveau, score)
+		
+		#affichage du score
+		pygame.display.set_caption(pacman.score)
+		
 
 				
 	#BOUCLE DE JEU
