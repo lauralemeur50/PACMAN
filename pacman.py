@@ -14,7 +14,7 @@ from constantes import *
 pygame.init()
 
 #Ouverture de la fenêtre Pygame (carré : largeur = hauteur)
-fenetre = pygame.display.set_mode((cote_fenetre, cote_fenetre))
+fenetre = pygame.display.set_mode((cote_largeur, cote_longueur))
 #Icone
 icone = pygame.image.load(image_icone)
 pygame.display.set_icon(icone)
@@ -52,11 +52,10 @@ while continuer:
 				#Variable de choix du niveau
 				choix = 0
 				
-			elif event.type == KEYDOWN:				
+			else:			
 				#Lancement du niveau 1
-				if event.key == K_F1:
-					continuer_accueil = 0	#On quitte l'accueil
-					choix = 'labyrinthe'		#On définit le niveau à charger
+				continuer_accueil = 0	#On quitte l'accueil
+				choix = 'labyrinthe'		#On définit le niveau à charger
 				
 			
 		
@@ -72,16 +71,18 @@ while continuer:
 		niveau.generer()
 		niveau.afficher(fenetre)
 
-		#Création de Donkey Kong
-		pacman = Perso("pacman_droite.png", "pacman_gauche.png", 
-		"pacman_haut.png", "pacman_bas.png", niveau)
+		#Création de pacman
+		pacman = Perso("pacman_d.png", "pacman_g.png", 
+		"pacman_h.png", "pacman_b.png", niveau)
 
 				
 	#BOUCLE DE JEU
 	while continuer_jeu:
 	
 		#Limitation de vitesse de la boucle
-		pygame.time.Clock().tick(30)
+		pygame.time.Clock().tick(8)
+
+
 	
 		for event in pygame.event.get():
 		
@@ -99,21 +100,35 @@ while continuer:
 				#Touches de déplacement de pacman
 				elif event.key == K_RIGHT:
 					pacman.deplacer('droite')
+					#on affiche du vide à la place de la gomme que pacman a mangé
+					niveau.structure[pacman.case_y][pacman.case_x]='v'
 				elif event.key == K_LEFT:
 					pacman.deplacer('gauche')
+					#on affiche du vide à la place de la gomme que pacman a mangé
+					niveau.structure[pacman.case_y][pacman.case_x]='v'
 				elif event.key == K_UP:
 					pacman.deplacer('haut')
+					#on affiche du vide à la place de la gomme que pacman a mangé
+					niveau.structure[pacman.case_y][pacman.case_x]='v'
 				elif event.key == K_DOWN:
 					pacman.deplacer('bas')	
+					#on affiche du vide à la place de la gomme que pacman a mangé
+					niveau.structure[pacman.case_y][pacman.case_x]='v'
 					
 		#Si on a appuyé sur rien, pacman continue son chemin
 		pacman.deplacer('standard')
+
+		#on affiche du vide à la place de la gomme que pacman a mangé
+		niveau.structure[pacman.case_y][pacman.case_x]='v'
 			
 		#Affichages aux nouvelles positions
 		fenetre.blit(fond, (0,0))
 		niveau.afficher(fenetre)
 		fenetre.blit(pacman.direction, (pacman.x, pacman.y)) #pacman.direction = l'image dans la bonne direction
 		pygame.display.flip()
+
+
+
 
 		#Victoire -> Retour à l'accueil
 		if niveau.structure[pacman.case_y][pacman.case_x] == 'a':
