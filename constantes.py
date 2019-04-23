@@ -27,3 +27,7 @@ gauche="pacman_g.png"
 haut="pacman_h.png"
 bas="pacman_b.png"
 rond="rond.jpg"
+
+#image fantôme
+image= "blinky.png"
+imagebleue="fantome_bleu.png"
